@@ -113,7 +113,7 @@ EOF;
 		//REWRITE 路由分发
 		static public function dispatch() {//todo
 			//todo rewrite这块要注意安全问题，防止被调用其他文件,并且逻辑要简化
-			empty($_SERVER['PATH_INFO']) && $_SERVER['PATH_INFO'] = '/Index/Index/index';
+			empty($_SERVER['PATH_INFO']) && $_SERVER['PATH_INFO'] = '/'.APP_NAME.'/Index/index';
 			$rw = explode('/',substr($_SERVER['PATH_INFO'],1));
 			//如果最后一个为空字符串，则直接删掉
 			if(empty($rw[count($rw)-1])) {
@@ -137,6 +137,7 @@ EOF;
 			$C = ucfirst(array_shift($rw));
 			$A = array_shift($rw);
 
+
 			//获取GET参数
 			$args = array();
 			if(!empty($rw)) {//todo 有问题 name和value没有在一起
@@ -155,10 +156,6 @@ EOF;
 
 			//执行对应控制器下的方法(最后调用)
 			$cn = $M.'\\Controller\\'.$C.'Controller';//使用限定名称
-			$obj = new $cn;//todo this writing type is so rubbish
-			$obj->$A();
-			/*
-			(new $M.'\\Controller\\'.$C.'Controller')->$A();//TODO
-			*/
+			(new $cn)->$A();
 		}
 	}

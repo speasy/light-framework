@@ -15,7 +15,6 @@
 	//定义应用(模块)名称
 	define('APP_NAME',ucfirst(substr(strrchr(substr(APP_ROOT,0,-1),'/'),1)));
 
-
 	//DEBUG设置
 	if(defined('APP_DEBUG') && (constant('APP_DEBUG') == true)) {//如果设置APP_DEBUG常量，则判断APP_DEBUG常量的值
 		error_reporting(E_ALL | E_STRICT);
@@ -57,6 +56,7 @@
 			spl_autoload(APP_ROOT.'Conf/'.$proCN);
 		}
 	},true,false);
+
 
 	//第一次访问入口文件时创建目录及文件
 	\Core\BaseLib::init_dir();//TODO 完全限定名称 限定名称？
