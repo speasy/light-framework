@@ -56,7 +56,11 @@
 	* 默认控制器
 	*/
 	namespace $ns;
+<<<<<<< HEAD
 	use \Core\Library\Controller;
+=======
+	use Library\Controller;
+>>>>>>> cbdc7a920eccc422ce90790dad2b9c2b7c11538b
 	defined('TOKEN') || exit();
 	class IndexController extends Controller {
 		//默认操作
