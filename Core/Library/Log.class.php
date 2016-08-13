@@ -11,9 +11,10 @@
 	 **/
 	final class LogTool {
 		private $rs = null;//文件资源
-		const FNAME = '/log/tmp.log';//TODO  被保函脚本中还包含文件时,注意其basedir永远为当前工作目录
+		const FNAME = '/log/tmp.log';//TODO  被包含脚本中还包含文件时,注意其basedir永远为当前工作目录
 		static private $ins = null;//保持对象实例
 
+		//封死__construct
 		final private function __construct() {
 		}
 
@@ -27,23 +28,24 @@
 			fwrite($this->rs,$str);
 		}
 
-		//判断文件大小
+		//判断文件大小，是否要备份
 		private function isbak() {
-			if(!is_dir($dir = dirname(ROOT.self::FNAME))) {
+			$fname = ROOT.self::FNAME;//文件名
+			if(!is_dir($dir = dirname($fname))) {
 				mkdir($dir,0777,true);
 			}
-			if(!is_file(ROOT.self::FNAME)) {
-				touch(ROOT.self::FNAME);
+			if(!is_file($fname)) {
+				touch($fname);
 			}
-			$size = filesize(ROOT.self::FNAME);//bytes
+			$size = filesize($fname);//单位:bytes
 			//大于1M就备份 1024*1024
 			if($size >= 1024*1024) {
 				//TODO 如何生成唯一的文件名
-				$nurl = substr(ROOT.self::FNAME,0,-4).'&'.mt_rand(1,100000).'&'.date('Ymdhis',time()).'&'.mt_rand(1,10000).'&'.'.log.bak';
-				copy(ROOT.self::FNAME,$nurl);
-				unlink(ROOT.self::FNAME);
+				$nurl = substr($fname,0,-4).'&'.mt_rand(1,100000).'&'.date('Ymdhis',time()).'&'.mt_rand(1,10000).'&'.'.log.bak';
+				copy($fname,$nurl);
+				unlink($fname);
 			}
-			//如果小于1M什么都不干
+			//如果小于1M什么都不做
 		}
 
 		//log()可以外部调用
@@ -68,7 +70,8 @@
 			fclose($this->rs);
 		}
 
+		//禁止克隆对象
 		public function __clone() {
-			trigger_error('Inhibit clone this LogTool class!');
+			trigger_error('Inhibit clone this LogTool Object!');
 		}
 	}

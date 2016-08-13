@@ -6,6 +6,10 @@
 	namespace Core;
 	defined('TOKEN') || exit('Access refused!');
 	class BaseLib {
+		static public $M;//模块名
+		static public $C;//控制器名
+		static public $A;//操作名
+
 		//对数组进行递归转义
 		static public function _addslashes($arr = array()) {
 			if(get_magic_quotes_gpc()) {
@@ -48,8 +52,8 @@
 					touch(APP_ROOT.$v.'/index.html');//创建空白index.html
 				}
 
+				//创建Controller目录下的IndexController.class.php文件
 				$ns = APP_NAME.'\\'.'Controller';//TODO heredoc nowdoc 搞明白
-				//创建controller目录下的IndexController.class.php文件
 				$content = <<<EOF
 <?php
 	/**
@@ -58,6 +62,7 @@
 	namespace $ns;
 	use \Core\Library\Controller as Controller;
 	defined('TOKEN') || exit();
+
 	class IndexController extends Controller {
 		//默认操作
 		public function index() {
@@ -67,9 +72,24 @@
 EOF;
 				self::initFile(APP_ROOT.'Controller/'.'IndexController.class.php',$content);
 
+				//创建Model目录下的IndexModel.class.php文件
+				$ns = APP_NAME.'\\'.'Model';//TODO heredoc nowdoc 搞明白
+				$content = <<<EOF
+<?php
+	/**
+	* 示例模型类 
+	*/
+	namespace $ns;
+	use \Core\Library\Model as Model;
+	defined('TOKEN') || exit();
+
+	class IndexModel extends Model {
+	} 
+EOF;
+				self::initFile(APP_ROOT.'Model/'.'IndexModel.class.php',$content);
+
 				//创建模块配置文件
 				$ns = APP_NAME.'\\'.'Conf';
-
 				$content = <<<EOF
 <?php
 	/**
@@ -78,19 +98,20 @@ EOF;
 	 */
 	namespace $ns;
 	defined('TOKEN') || exit();
+
 	class Config {
 		static public function getConf() {
 			return array(
 				/*
 				usage:
-				'DB_TYPE'		=>'',				//数据库类型
-				'DB_HOST'		=>'',				//数据库地址
-				'DB_NAME'		=>'',				//数据库名
-				'DB_USER'		=>'',				//用户名
-				'DB_PWD'		=>'',				//密码
-				'DB_PORT'		=>'3306',			//端口
-				'DB_CHARSET'	=>'utf8',			//编码
-				'DB_PREFIX'		=>'',				//表前缀
+				'DB_TYPE'		=>'',					//数据库类型 例如:Mysqli,Memcache,Redis
+				'DB_HOST'		=>'',					//数据库地址
+				'DB_NAME'		=>'',					//数据库名
+				'DB_USER'		=>'',					//用户名
+				'DB_PWD'		=>'',					//密码
+				'DB_PORT'		=>'',					//端口
+				'DB_CHARSET'	=>'utf8',				//编码
+				'DB_PREFIX'		=>'',					//表前缀
 				*/
 			);
 		}
@@ -133,9 +154,9 @@ EOF;
 			}
 
 			//获取模块M，控制器C，操作A
-			$M = ucfirst(array_shift($rw));
-			$C = ucfirst(array_shift($rw));
-			$A = array_shift($rw);
+			self::$M = $M = ucfirst(array_shift($rw));
+			self::$C = $C = ucfirst(array_shift($rw));
+			self::$A = $A = array_shift($rw);
 
 
 			//获取GET参数

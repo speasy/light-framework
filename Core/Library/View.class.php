@@ -4,5 +4,6 @@
 	 */
 	namespace Core\Library;
 	defined('TOKEN') || exit();
+
 	abstract class View {
 	}

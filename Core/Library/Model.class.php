@@ -4,14 +4,21 @@
 	 */
 	namespace Core\Library;
 	defined('TOKEN') || exit();
+
 	class Model {
-		protected $db = null;//保持数据库操作单例
+		protected $db = null;//保存数据库操作单例
+		protected $config = array();//数据库配置文件
+		protected $connection = array();//具体模型类中定义的数据库配置文件
 
 		public function __construct() {
-			$this->db = \Core\Library\Db\Mysqli::getIns();//todo Mysqli应该用常量替换
-			//todo 入口文件定义常量应该替换掉 配置文件
-		}
+			//数据库配置文件
+			$fw_config = \Core\Config::getConf();//框架中的配置文件
+			$CName = '\\'.\Core\BaseLib::$M.'\\Conf\\Config';//类名
+			$app_config = $CName::getConf();//应用中的配置文件
+			$this->config = array_merge($fw_config,$app_config,$this->connection);//合并配置文件
 
-		public function db() {
+			//根据配置文件获取数据库对象
+			$DName = '\\Core\\Library\\Db\\'.$this->config['DB_TYPE'];
+			$this->db = $DName::getIns();
 		}
 	}

@@ -3,44 +3,18 @@
 	 * MySQL数据库操作类
 	 */
 	namespace Core\Library\Db;
-	use Core\Library\Db as Db;
+	use \Core\Library\Db as Db;
 	defined('TOKEN') || exit();
+
 	final class Mysqli extends Db {
 		private $mysqli_link = null;//保存一个mysqli链接
 		private $mysqli_rs = null;//保持一个mysqli query的结果集资源 mysqli_rs
-		private $config;//数据库配置文件
-		public $tableName = ''; //要操作的表名
-		static private $ins = null;//保持MySQLi实例
-
-		final private function __construct() {
-			 $this->config = \Index\Conf\Config::getConf();//配置文件类化，实现Lazy Loading，加快运行速度
+		protected $tableName = ''; //要操作的表名
+		
+		final protected function __construct($config) {
+			parent::__construct($config);
 			//连接数据库
 			$this->connect($this->config['DB_HOST'],$this->config['DB_USER'],$this->config['DB_PWD'],$this->config['DB_NAME']);
-			 //todo connect不能放在__construct()中
-		}
-
-
-		/**
-		 * 返回一个单例
-		 */
-		static public function getIns() {
-			//todo self出现问题
-			var_dump(\Core\Library\Db\Mysqli::$ins === self::$ins);//todo  命名空间中self指向那个类???
-			exit;
-
-
-			if(empty(self::$ins) || !(self::$ins instanceof self)) {
-				self::$ins = new self();
-			}
-			return self::$ins;
-		}
-
-		/**
-		 * 对获取的MySQLi对象实例进行reform
-		 * param:array $conf_arr 新的数据库配置文件
-		 */
-		public function reform($conf_arr = array()) {
-			$this->config = $conf_arr;
 		}
 
 		/**
@@ -225,13 +199,7 @@
 			$this->mysqli_link->close();
 		}
 
-
 		public function __destruct() {
 			$this->close();
-		}
-
-
-		public function __clone() {
-			trigger_error('Prohibit Clone,this is single mysqli class.');
 		}
 	}

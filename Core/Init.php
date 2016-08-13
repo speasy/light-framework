@@ -16,10 +16,11 @@
 	define('APP_NAME',ucfirst(substr(strrchr(substr(APP_ROOT,0,-1),'/'),1)));
 
 	//DEBUG设置
-	if(defined('APP_DEBUG') && (constant('APP_DEBUG') == true)) {//如果设置APP_DEBUG常量，则判断APP_DEBUG常量的值
-		error_reporting(E_ALL | E_STRICT);
-	} else {
-		error_reporting(0);//TODO
+	error_reporting(E_ALL | E_STRICT);
+	if(!defined('APP_DEBUG') || (constant('APP_DEBUG') != true)) {//如果设置APP_DEBUG常量，则判断APP_DEBUG常量的值
+		ini_set('display_errors',0);
+		ini_set('log_errors',1);
+		ini_set('error_log','./test.txt');//TODO
 	}
 	
 	//自动记载框架类文件，模块控制器，模型类文件  Lazy Loading
