@@ -12,6 +12,7 @@
 		protected $tableName = ''; //要操作的表名
 		
 		final protected function __construct($config) {
+			//调用Db类的构造方法
 			parent::__construct($config);
 			//连接数据库
 			$this->connect($this->config['DB_HOST'],$this->config['DB_USER'],$this->config['DB_PWD'],$this->config['DB_NAME']);
@@ -25,7 +26,7 @@
 		* param $database 库名
 		 */
 		public function connect($host,$user,$password,$database) {
-			$this->mysqli_link = new mysqli($host,$user,$password,$database);
+			$this->mysqli_link = new \mysqli($host,$user,$password,$database);//TODO　NOTE
 		}
 
 

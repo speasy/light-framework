@@ -17,10 +17,10 @@
 		 * 返回一个单例
 		 */
 		static public function getIns($config = array()) {
-			if(empty(self::$ins) || !(self::$ins instanceof self)) {
-				self::$ins = new self($config);
+			if(empty(static::$ins) || !(static::$ins instanceof static)) {
+				static::$ins = new static($config);
 			}
-			return self::$ins;
+			return static::$ins;
 		}
 
 		/**
