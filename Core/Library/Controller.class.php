@@ -18,6 +18,9 @@
 
 		/**
 		 * 输出模板并渲染变量
+		 * param boolean/array $view usage:array($controllerName,$actionName)
+		 * param array $data		 usage:array(k1=>v1,k2=>v2,...)
+		 * return NULL
 		 **/
 		protected function render($view = NULL,$data = array()) {//TODO
 			extract($data, EXTR_PREFIX_SAME,'data');
@@ -32,9 +35,11 @@
 		}
 
 		protected function error() {
+			require APP_ROOT.'View/'.$this->CName.'/'.$this->AName.'.html';
 		}
 
 		protected function success() {
+			require APP_ROOT.'View/'.$this->CName.'/'.$this->AName.'.html';
 		}
 
 		protected function redirect() {

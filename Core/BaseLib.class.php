@@ -42,15 +42,22 @@
 
 		//初始化应用时创建目录及文件
 		static public function init_dir() {
-			//创建对应应用下的目录
 			if(!file_exists(APP_ROOT.'Lock.txt')) {//若Lock.txt文件不存在，则创建初始化目录
 				$core_config = \Core\Config::getConf();
 				self::mk_dir(APP_ROOT);
 				touch(APP_ROOT.'Lock.txt');//创建Lock.txt文件，表示应用目录以及创建完毕，不需要每次创建
 				touch(APP_ROOT.'index.html');//创建空白index.html，目录安全文件
+				//创建对应应用下的目录
 				foreach($core_config['DEFAULT_CREATE_DIRS'] as $v) {
 					self::mk_dir(APP_ROOT.$v);
 					touch(APP_ROOT.$v.'/index.html');//创建空白index.html
+				}
+
+				//创建静态文件目录
+				$confirm_resource_dir = APP_ROOT.$core_config['CONFIRM_RESOURCE_DIR'][0];
+				foreach($core_config['CONFIRM_RESOURCE_DIR'][1] as $v) {
+					self::mk_dir($confirm_resource_dir.'/'.$v);
+					touch($confirm_resource_dir.'/'.$v.'/index.html');//创建空白index.html
 				}
 
 				//创建Controller目录下的IndexController.class.php文件
