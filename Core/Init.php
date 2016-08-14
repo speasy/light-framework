@@ -27,12 +27,11 @@
 	spl_autoload_extensions('.class.php');//注册并返回spl_autoload函数使用的默认文件扩展名
 	spl_autoload_register(function($className) {//把匿名函数注册到__autoload队列
 		/**
-		* comment:
-		* The namespace under the app's contoller directory is: Index\Controller\IndexController
-		* The namespace of the frame's controller is: Core\Library\Controller
-		* The namespace of this directory's script is: Core\BaseLib
-		* Core\Library\Db\MysqliModel;
-		* Index\Conf\Config
+		* All namespace:
+		* Core
+		* Core\Library
+		* Core\Library\Plugin
+		* Core\Library\Db
 		*
 		* todo 使用 namespace关键字修改
 		* todo 根据加载顺序 对下列else 进行微调
@@ -43,18 +42,20 @@
 		echo '统计的标记:',$flag,"&nbsp;&nbsp;文件名:",$className,'.class.php','<br />';
 
 		$proCN = array_slice(explode('\\',$className),-1,1)[0];//由非限定，限定，完全限定命名文件获取文件名
-		if($flag === 'Controller') {//说明为应用目录的Controller下
+		if($flag === 'Controller') {		//应用目录的Controller下
 			spl_autoload(APP_ROOT.'Controller/'.$proCN);//todo APP_ROOT为相对路径 CORE_ROOT为绝对路径，那个效率高些？？ sql_autoload加载时include的顺序
-		} else if($flag === 'Model') {//说明为应用目录的Model下
-			spl_autoload(APP_ROOT.'Model/'.$proCN);
-		} else if($flag === 'Db') {
-			spl_autoload(CORE_ROOT.'Library/Db/'.$proCN);
-		} else if($flag === 'Library') {//说明为框架Core/Library目录下
-			spl_autoload(CORE_ROOT.'Library/'.$proCN);
-		} else if($flag === 'Core') {
-			spl_autoload(CORE_ROOT.$proCN);
-		} else if($flag === 'Conf') {
+		} else if($flag === 'Model') {		//应用目录的Model下
+			spl_autoload(APP_ROOT.'Model/'.$proCN);	
+		} else if($flag === 'Conf') {		//应用Conf目录下
 			spl_autoload(APP_ROOT.'Conf/'.$proCN);
+		} else if($flag === 'Core') {		//框架Core目录下
+			spl_autoload(CORE_ROOT.$proCN);
+		} else if($flag === 'Library') {	//框架Core/Library目录下
+			spl_autoload(CORE_ROOT.'Library/'.$proCN);
+		} else if($flag === 'Db') {			//框架Core/Library/Db目录下
+			spl_autoload(CORE_ROOT.'Library/Db/'.$proCN);
+		} else if($flag === 'Plugin') {		//框架Core/Library/Plugin目录下
+			spl_autoload(CORE_ROOT.'Library/Plugin/'.$proCN);
 		}
 	},true,false);
 

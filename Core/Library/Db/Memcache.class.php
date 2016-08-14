@@ -1,9 +1,10 @@
 <?php
 	/**
-	 * Memcached数据库操作类
+	 * Memcache数据库操作类
 	 */
 	namespace Core\Library\Db;
-	use \Core\Library\Db as Db;
+	use \Core\Library\Db\Db as Db;
+	defined('TOKEN') || exit();
 
 	final class Memcache extends Db {
 	}

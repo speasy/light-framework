@@ -2,11 +2,11 @@
 	/**
 	 * 数据库抽象类
 	 */
-	namespace Core\Library;
+	namespace Core\Library\Db;
 	defined('TOKEN') || exit();
 
 	abstract class Db {
-		static private $ins = null;//保存数据库对象
+		static protected $ins = null;//保存数据库对象 TODO 子类继承父类，属性方法都可以继承，但是不一定能调用（可见性控制）
 		protected $config;//数据库配置文件
 
 		protected function __construct($config = array()) {
@@ -14,10 +14,10 @@
 		}
 
 		/**
-		 * 返回一个单例
+		 * 获取数据库对象单例 
 		 */
 		static public function getIns($config = array()) {
-			if(empty(static::$ins) || !(static::$ins instanceof static)) {
+			if(empty(static::$ins) || !(static::$ins instanceof static)) {//Late-static-bindings
 				static::$ins = new static($config);
 			}
 			return static::$ins;

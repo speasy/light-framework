@@ -2,8 +2,9 @@
 	/**
 	 * sql语句记录类
 	 **/
-	namespace Core\Library;
+	namespace Core\Library\Plugin;
 	defined('TOKEN') || exit();
+
 	/**
 	 * 调用方式:
 	 * $ins = LogTool::getIns();

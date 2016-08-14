@@ -5,6 +5,7 @@
 	 */
 	namespace Core;
 	defined('TOKEN') || exit('Access refused!');
+
 	class BaseLib {
 		static public $M;//模块名
 		static public $C;//控制器名
@@ -39,10 +40,10 @@
 			return mkdir($dirName,$mode);
 		}
 
-		//第一次访问入口文件时创建目录及文件
-		static public function init_dir() {//使用函数可以避免创建一些不必要的变量，执行完毕就变量就销毁
+		//初始化应用时创建目录及文件
+		static public function init_dir() {
 			//创建对应应用下的目录
-			if(!file_exists(APP_ROOT.'Lock.txt')) {
+			if(!file_exists(APP_ROOT.'Lock.txt')) {//若Lock.txt文件不存在，则创建初始化目录
 				$core_config = \Core\Config::getConf();
 				self::mk_dir(APP_ROOT);
 				touch(APP_ROOT.'Lock.txt');//创建Lock.txt文件，表示应用目录以及创建完毕，不需要每次创建
@@ -157,7 +158,6 @@ EOF;
 			self::$M = $M = ucfirst(array_shift($rw));
 			self::$C = $C = ucfirst(array_shift($rw));
 			self::$A = $A = array_shift($rw);
-
 
 			//获取GET参数
 			$args = array();
