@@ -23,10 +23,10 @@
 		 * return NULL
 		 **/
 		protected function render($view = NULL,$data = array()) {//TODO
-			extract($data, EXTR_PREFIX_SAME,'data');
+			!empty($data) && extract($data, EXTR_PREFIX_SAME,'data');
 			ob_start();
 			ob_implicit_flush(0);
-			if(empty($params)) {
+			if(empty($view)) {
 				require APP_ROOT.'View/'.$this->CName.'/'.$this->AName.'.html';
 			} else { //若$params非空，则调用
 				require APP_ROOT.'View/'.$view[0].'/'.$view[1].'.html';
@@ -34,14 +34,33 @@
 			echo ob_get_clean();
 		}
 
-		protected function error() {
-			require APP_ROOT.'View/'.$this->CName.'/'.$this->AName.'.html';
+		private function dispatchJump($view = '',$data = array()) {
+			!empty($data) && extract($data,EXTR_PREFIX_SAME,'data');
+			ob_start();
+			ob_implicit_flush(0);
+			require CORE_ROOT.'Template/'.$view.'.html';
+			echo ob_get_clean();
 		}
 
-		protected function success() {
-			require APP_ROOT.'View/'.$this->CName.'/'.$this->AName.'.html';
+		/*
+		 * 操作失败，页面跳转
+		 */
+		protected function error($mess = '操作失败',$url = '',$timeout = 3) {
+			$this->dispatchJump('error',[
+			]);
 		}
 
+		/*
+		 * 操作成功，页面跳转
+		 */
+		protected function success($mess = '操作成功',$url = '',$timeout = 1) {
+			$this->dispatchJump('error',[
+			]);
+		}
+
+		/*
+		 * 页面重定向
+		 */
 		protected function redirect() {
 		}
 

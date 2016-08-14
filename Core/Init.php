@@ -7,6 +7,8 @@
 	//开启session
 	session_start();
 	header('Content-Type:text/html;charset=utf-8');
+	//设置时区（中国）
+	date_default_timezone_set("PRC");
 	
 	//定义网站根目录,最后面有 '/'
 	define('ROOT',str_replace('\\','/',dirname(dirname(__FILE__))).'/');//todo 何时绝对路径 何时相对路径??
