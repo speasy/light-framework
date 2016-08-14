@@ -7,4 +7,5 @@
 	defined('TOKEN') || exit();
 
 	class IndexModel extends Model {
+		protected $connect = array('DB_PORT'=>'111');
 	} 
