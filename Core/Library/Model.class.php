@@ -88,7 +88,7 @@
 		/**
 		 * 自动处理
 		 **/
-		public function Go(&$data = array(),$_map = array(),$_validate = array(),$_pad = array()) {
+		public function autoPro(&$data = array(),$_map = array(),$_validate = array(),$_pad = array()) {
 			$this->autoMap($data,$_map);
 			$this->autoValidate($data,$_validate);
 			$this->autoPad($data,$_pad);
