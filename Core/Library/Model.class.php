@@ -56,8 +56,22 @@
 			$this->db = $DName::getIns($this->config);
 		}
 
-		/*
-		 * 自动字段映射
+		/**
+			* @Brief  获取数据库相应表全部字段
+			*
+			* @Returns   
+		 */
+		private function getAllFields() {
+			return $this->db
+		}
+
+		/**
+			* @Brief 自动字段映射
+			*
+			* @Param $data array origin_data
+			* @Param $_map array array('form_input_name1'=>'table_field1','form_input_name2'=>'table_field2',...)
+			*
+			* @Returns
 		 */
 		public function autoMap(&$data = array(),$_map = array()) {
 			//TODO 注释

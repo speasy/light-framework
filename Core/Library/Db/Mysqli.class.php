@@ -116,23 +116,29 @@
 
 
 		/**
-		* 执行sql语句
-		* return false，mysqli_result object,true
+			* @Brief  执行sql语句
+			*
+			* @Param $sql
+			*
+			* @Returns   boolean/object
 		 */
 		public function query($sql) {
 			//调用LogModel类进行记录sql语句 TODO 大并发时如何搞？？
-			$ins = LogTool::getIns();
+			$ins = LogTool::getIns();//TODO
 			$ins->log($sql);
 			//return $this->mysqli_rs = $this->mysqli_link->query($sql);
 			return $this->mysqli_link->query($sql);//NOTE 简单的执行，其不一定返回一个mysqli_rs对象
 		}
 
 		/**
-		 * 返回结果集中的一行数据
-		 * param $fields array('field1','field2',...)
-		 * param $cond array/string
-		 * array array('field1'=>'value1','field2'=>'value2',...)
-		 * string "where field1='value1' and field2='value2' and .."
+			* @Brief  返回结果集中的一行数据
+			*
+			* @Param $fields array array('field1','field2',...)
+			* @Param $cond array/string
+			* array array('field1'=>'value1','field2'=>'value2',...)
+		 	* string "where field1='value1' and field2='value2' and .."
+			*
+			* @Returns   
 		 */
 		public function find($fields = array(),$cond) {
 			$sql = 'select ';
@@ -166,22 +172,22 @@
 		 * string "where field1='value1' and field2='value2' and .."
 		 */
 		public function select($fields = array(),$cond) {
-			$sql = 'select ';
+			$sql = 'SELECT ';
 			foreach($fields as $v) {
 				$sql .= $v.',';
 			}
 			$sql = substr($sql,0,-1).' from '.$this->tableName;
 			if(is_array($cond)) {//如果$cond为数组，进行拼接，主要是等于条件
-				$sql .= ' where ';
+				$sql .= ' WHERE ';
 				foreach($cond as $k=>$v) {
-					$sql .= $k.'='."'$v' and ";
+					$sql .= $k.'='."'$v' AND ";
 				}
-				$sql = substr($sql,0,strpos($sql,' and'));
+				$sql = substr($sql,0,strpos($sql,' AND'));
 			} else {// 对于>,<,>=,<=,in,between and等条件直接传入条件字符串
 				$sql .= ' '.$cond;
 			}
 
-			$this->query("set names {$this->config['character']}");
+			$this->query("SET NAMES {$this->config['character']}");
 			$this->mysqli_rs = $this->query($sql);
 			if($this->mysqli_link && $this->mysqli_link->affected_rows > 0) {
 				return $this->mysqli_rs->fetch_all(MYSQLI_ASSOC);
@@ -196,7 +202,49 @@
 			return false;
 		}
 
-		public function close() {
+		/**
+			* @Brief  获取表中全部字段
+			*
+			* @Returns   array
+		 */
+		public function getFields() {
+			$sql = "SELECT `COLUMN_NAME` FROM information_schema.COLUMNS WHERE `table_name` = '$this->tableName' AND `table_schema` = '{$this->config['DB_NAME']}';";
+			return $this->query($sql);
+		}
+
+		/**
+			* @Brief  开启事务操作 Requires MySQL 5.6 and above, and the InnoDB engine (it is enabled by default). 
+			*
+			* @Returns   boolean
+		 */
+		public function beginTransaction() {
+			return $this->mysqli_link->begin_transaction($this->mysqli_link,MYSQLI_TRANS_START_READ_ONLY);
+		}
+
+		/**
+			* @Brief  事务commit
+			*
+			* @Returns   boolean
+		 */
+		public function commit() {
+			return $this->mysqli_link->commit();
+		}
+
+		/**
+			* @Brief  事务回滚
+			*
+			* @Returns   boolean
+		 */
+		public function rollBack() {
+			return $this->mysqli_link->rollback();
+		}
+
+		/**
+			* @Brief  关闭数据库连接资源
+			*
+			* @Returns   
+		 */
+		private function close() {
 			$this->mysqli_link->close();
 		}
 

@@ -49,7 +49,7 @@
 		/**
 		 *关闭链接
 		 */
-		abstract public function close();
+		abstract private function close();
 
 		/**
 		 * 防止克隆数据库对象
