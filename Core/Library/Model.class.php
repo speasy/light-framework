@@ -59,10 +59,10 @@
 		/**
 			* @Brief  获取数据库相应表全部字段
 			*
-			* @Returns   
+			* @Returns   array
 		 */
 		private function getAllFields() {
-			return $this->db
+			return $this->db->getAllFields();
 		}
 
 		/**
@@ -74,6 +74,7 @@
 			* @Returns
 		 */
 		public function autoMap(&$data = array(),$_map = array()) {
+			
 			//TODO 注释
 			//$data = $_GET; 需要什么字段？？
 			//autoMap
@@ -82,6 +83,8 @@
 			//三个函数失败的退出机制
 			//D方法和M方法都要实现
 			$_map = array_merge($this->_map,$_map);//合并字段映射规则
+			if(!$this->fieldCheck(array_keys($_map))) {//给出提示消息
+			}
 		}
 
 		/*
@@ -109,11 +112,23 @@
 		}
 
 		/**
-		 * 对字段进行检查
-		 **/
-		public function fieldCheck($data = array()) {
+			* @Brief  对字段进行检查
+			*
+			* @Param $fields array array('field1','field2',...) 需要验证该数组中的字段是否存在于相应表中
+			*
+			* @Returns   
+		 */
+		private function fieldCheck($fields = array()) {
+			//TODO 异常处理类
+			$existed_fields = $this->db->getAllFields();
+			array_walk($fields,function($v,$k,$existed_fields) {
+				if(!in_array($v,$existed_fields)) {
+					return false;
+					break;
+				}
+			},$existed_fields);
+			return true;
 		}
-
 
 		public function add() {
 		}

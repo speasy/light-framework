@@ -207,8 +207,8 @@
 			*
 			* @Returns   array
 		 */
-		public function getFields() {
-			$sql = "SELECT `COLUMN_NAME` FROM information_schema.COLUMNS WHERE `table_name` = '$this->tableName' AND `table_schema` = '{$this->config['DB_NAME']}';";
+		public function getAllFields() {
+			$sql = "SELECT `COLUMN_NAME` FROM information_schema.COLUMNS WHERE `table_name` = '$this->tableName' AND `table_schema`='{$this->config['DB_NAME']}';";
 			return $this->query($sql);
 		}
 
