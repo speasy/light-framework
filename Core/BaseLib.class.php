@@ -11,24 +11,30 @@
 		static public $C;//控制器名
 		static public $A;//操作名
 
-		//对数组进行递归转义
-		static public function _addslashes($arr = array()) {
-			if(get_magic_quotes_gpc()) {
-				return $arr;
-			}
-			if(is_array($arr)) {
-				foreach($arr as $k=>$v) {
-					if(is_array($v)) {
-						$arr[$k] = self::_addslashes($v);//递归调用
-					} else {
-						$arr[$k] = addslashes($v);
-					}
-				}
-			}
-			return $arr;
+		/**
+			* @Brief  对数组进行递归转义
+			*
+			* @Param $arr	array 要处理的数组（引用赋值）
+			*
+			* @Returns   NULL
+		 */
+		static public function _addslashes(&$arr = array()) {
+			if(get_magic_quotes_gpc()) return $arr;
+
+			array_walk($arr,function(&$v) {
+				if(is_array($v)) self::_addslashes($v);//递归调用
+				else $v = addslashes($v);
+			});
 		}
 
-		//递归创建目录 注意当前目录
+		/**
+			* @Brief  递归创建目录 注意当前目录
+			*
+			* @Param $dirName
+			* @Param $mode
+			*
+			* @Returns   
+		 */
 		static public function mk_dir($dirName = '',$mode = 0777) {
 			if(is_dir($dirName)) {
 				return true;
@@ -40,7 +46,11 @@
 			return mkdir($dirName,$mode);
 		}
 
-		//初始化应用时创建目录及文件
+		/**
+			* @Brief  初始化应用时创建目录及文件
+			*
+			* @Returns   
+		 */
 		static public function init_dir() {
 			if(!file_exists(APP_ROOT.'Lock.txt')) {//若Lock.txt文件不存在，则创建初始化目录
 				$core_config = \Core\Config::getConf();
@@ -129,7 +139,14 @@ EOF;
 			}
 		}
 
-		//框架初始化时创建脚本
+		/**
+			* @Brief  框架初始化时创建脚本
+			*
+			* @Param $url
+			* @Param $cont
+			*
+			* @Returns   
+		 */
 		static public function initFile($url = '',$cont = '') {
 			if(is_file($url)) {
 				return true;
@@ -139,7 +156,11 @@ EOF;
 			fclose($rs);
 		}
 
-		//REWRITE 路由分发
+		/**
+			* @Brief  REWRITE 路由分发
+			*
+			* @Returns   
+		 */
 		static public function dispatch() {//todo
 			//todo rewrite这块要注意安全问题，防止被调用其他文件,并且逻辑要简化
 			empty($_SERVER['PATH_INFO']) && $_SERVER['PATH_INFO'] = '/'.APP_NAME.'/Index/index';
@@ -178,9 +199,9 @@ EOF;
 			//$_REQUEST = array_merge($_POST,$_GET,$_COOKIE);
 
 			//对GPC超全局数组进行转义
-			$_GET = self::_addslashes($_GET);
-			$_POST = self::_addslashes($_POST);
-			$_COOKIE = self::_addslashes($_COOKIE);//todo spl_autoload() 和require() 效率对比
+			self::_addslashes($_GET);
+			self::_addslashes($_POST);
+			self::_addslashes($_COOKIE);//todo spl_autoload() 和require() 效率对比
 
 			//执行对应控制器下的方法(最后调用)
 			$cn = $M.'\\Controller\\'.$C.'Controller';//使用限定名称
