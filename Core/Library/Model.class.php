@@ -74,7 +74,6 @@
 			* @Returns
 		 */
 		public function autoMap(&$data = array(),$_map = array()) {
-			
 			//TODO 注释
 			//$data = $_GET; 需要什么字段？？
 			//autoMap
@@ -83,7 +82,8 @@
 			//三个函数失败的退出机制
 			//D方法和M方法都要实现
 			$_map = array_merge($this->_map,$_map);//合并字段映射规则
-			if(!$this->fieldCheck(array_keys($_map))) {//给出提示消息
+			if(!$msg = $this->fieldCheck(array_keys($_map))) {//给出提示消息
+				//new \Core\Library\Controller;
 			}
 		}
 
@@ -120,14 +120,24 @@
 		 */
 		private function fieldCheck($fields = array()) {
 			//TODO 异常处理类
-			$existed_fields = $this->db->getAllFields();
+			$existed_fields = $this->db->getAllFields();//获取相应表中的全部字段
+			$msg = array();//错误返回信息
+			$flag = 1;
+			/*
 			array_walk($fields,function($v,$k,$existed_fields) {
 				if(!in_array($v,$existed_fields)) {
-					return false;
+					return false;//TODO
 					break;
 				}
 			},$existed_fields);
-			return true;
+			 */
+			foreach($fields as $v) {
+				if(!in_array($v,$existed_fields)) {
+					$flag = 0;
+					array_push($msg,"字段$v不存在");
+				}
+			}
+			return ($flag == 1) ? true : $msg;
 		}
 
 		public function add() {

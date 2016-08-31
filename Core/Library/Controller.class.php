@@ -5,6 +5,9 @@
 	namespace Core\Library;
 	defined('TOKEN') || exit();
 
+	/**
+	 * 定义Controller为抽象类，用于继承，其本身不能被实例化
+	 **/
 	abstract class Controller {
 		private $CName = '';		//控制器名称
 		private $AName = '';		//操作名称
@@ -22,7 +25,7 @@
 		 * param array $data		 usage:array(k1=>v1,k2=>v2,...)
 		 * return NULL
 		 **/
-		protected function render($view = NULL,$data = array()) {//TODO
+		public function render($view = NULL,$data = array()) {//TODO
 			!empty($data) && extract($data, EXTR_PREFIX_SAME,'data');
 			ob_start();
 			ob_implicit_flush(0);
@@ -33,6 +36,8 @@
 			}
 			echo ob_get_clean();
 		}
+
+		//部分渲染，加载共同模板 TODO	
 
 		private function dispatchJump($view = '',$data = array()) {
 			!empty($data) && extract($data,EXTR_PREFIX_SAME,'data');
