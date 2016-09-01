@@ -120,17 +120,22 @@ EOF;
 	class Config {
 		static public function getConf() {
 			return array(
-				/*
-				usage:
-				'DB_TYPE'		=>'',					//数据库类型 例如:Mysqli,Memcache,Redis
-				'DB_HOST'		=>'',					//数据库地址
-				'DB_NAME'		=>'',					//数据库名
-				'DB_USER'		=>'',					//用户名
-				'DB_PWD'		=>'',					//密码
-				'DB_PORT'		=>'',					//端口
-				'DB_CHARSET'	=>'utf8',				//编码
-				'DB_PREFIX'		=>'',					//表前缀
-				*/
+				'DB_TYPE'		=>'MySQL',					//数据库类型 例如:MySQL,Memcache,Redis
+				//各种数据库配置文件
+				'MYSQL' => [
+					//数据库配置
+					'DB_HOST'		=>'localhost',					//数据库地址
+					'DB_NAME'		=>'chat',					//数据库名
+					'DB_USER'		=>'root',					//用户名
+					'DB_PWD'		=>'root888',					//密码
+					'DB_PORT'		=>'3306',					//端口
+					'DB_CHARSET'	=>'utf8',				//编码
+					'DB_PREFIX'		=>'',					//表前缀
+				],
+				'REDIS' => [
+				],
+				'MEMCACHE' => [
+				],
 			);
 		}
 	}
@@ -205,6 +210,6 @@ EOF;
 
 			//执行对应控制器下的方法(最后调用)
 			$cn = $M.'\\Controller\\'.$C.'Controller';//使用限定名称
-			(new $cn)->$A();
+			(new $cn)->$A();//TODO call_user_func  控制器参数传递  模块，控制器不存在时报错处理
 		}
 	}

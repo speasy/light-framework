@@ -140,23 +140,23 @@
 			*
 			* @Returns   
 		 */
-		public function find($fields = array(),$cond) {
-			$sql = 'select ';
+		public function findOne(array $fields = array(),$cond) {
+			$sql = 'SELECT ';
 			foreach($fields as $v) {
 				$sql .= $v.',';
 			}
-			$sql = substr($sql,0,-1).' from '.$this->tableName;
+			$sql = substr($sql,0,-1).' FROM '.$this->tableName;
 			if(is_array($cond)) {//如果$cond为数组，进行拼接，主要是等于条件
-				$sql .= ' where ';
+				$sql .= ' WHERE ';
 				foreach($cond as $k=>$v) {
-					$sql .= $k.'='."'$v' and ";
+					$sql .= $k.'='."'$v' AND ";
 				}
-				$sql = substr($sql,0,strpos($sql,' and'));
+				$sql = substr($sql,0,strpos($sql,' AND'));
 			} else {// 对于>,<,>=,<=,in,between and等条件直接传入条件字符串
 				$sql .= ' '.$cond;
 			}
 
-			$this->query("set names {$this->config['character']}");
+			$this->query("SET NAMES {$this->config['character']}");
 			$this->mysqli_rs = $this->query($sql);
 			if($this->mysqli_link && $this->mysqli_link->affected_rows > 0) {
 				return $this->mysqli_rs->fetch_assoc();
@@ -171,7 +171,7 @@
 		 * array array('field1'=>'value1','field2'=>'value2',...)
 		 * string "where field1='value1' and field2='value2' and .."
 		 */
-		public function select($fields = array(),$cond) {
+		public function findAll(array $fields = array(),$cond) {
 			$sql = 'SELECT ';
 			foreach($fields as $v) {
 				$sql .= $v.',';
@@ -251,4 +251,5 @@
 		public function __destruct() {
 			$this->close();
 		}
+		//TODO group by order by where
 	}

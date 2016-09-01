@@ -9,6 +9,12 @@
 	 * 定义Model为抽象类，用于具体模型类继承，其本身不能被实例化
 	 **/
 	abstract class Model {
+		private $rule = [
+			'MySQL' => 'Mysqli',
+			'Memcache' => 'Memcache',
+			'Redis' => 'Redis',
+
+		];
 		protected $db = null;//保存数据库操作单例
 		protected $config = array();//合并之后的配置文件（框架配置文件，应用配置文件，模型类配置文件）
 
@@ -17,16 +23,6 @@
 		protected $tableName = NULL;//不包含表前缀的数据表名称，一般情况下默认和模型名称相同，只有当你的表名和当前的模型类的名称不同的时候才需要定义
 		protected $dbName = NULL;//定义模型当前对应的数据库名称，只有当你当前的模型类对应的数据库名称和配置文件不同的时候才需要定义
 		protected $connection = array(//具体模型类中定义的数据库配置文件
-			/*
-			'DB_TYPE'		=>'Mysqli',					//数据库类型 例如:Mysqli,Memcache,Redis
-			'DB_HOST'		=>'localhost',					//数据库地址
-			'DB_NAME'		=>'chat',					//数据库名
-			'DB_USER'		=>'root',					//用户名
-			'DB_PWD'		=>'root888',					//密码
-			'DB_PORT'		=>'3306',					//端口
-			'DB_CHARSET'	=>'utf8',				//编码
-			'DB_PREFIX'		=>'',					//表前缀
-			 */
 		);
 		protected $_map = array(//字段映射规则
 			/*
@@ -52,7 +48,7 @@
 			isset($this->dbName) && $this->config['DB_NAME'] = $this->dbName;
 
 			//根据DB_TYPE获取对应的数据库对象单例
-			$DName = '\\Core\\Library\\Db\\'.$this->config['DB_TYPE'];
+			$DName = '\\Core\\Library\\Db\\'.$this->rule[$this->config['DB_TYPE']];
 			$this->db = $DName::getIns($this->config);
 		}
 

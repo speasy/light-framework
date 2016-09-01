@@ -62,11 +62,15 @@
 	},true,false);
 
 
-	//第一次访问入口文件时创建目录及文件
-	\Core\BaseLib::init_dir();//TODO 完全限定名称 限定名称？
+	try {
+		//第一次访问入口文件时创建目录及文件
+		\Core\BaseLib::init_dir();//TODO 完全限定名称 限定名称？
 
-	//定义REWRITE模式 SCHEMA://hostname/index.php（或者其他应用入口文件）/模块/控制器/操作/[参数名/参数值...]
-	/**
-	 * eg:localhost/chat/index.php 转入 localhost/chat/index.php/index/index/index
-	 */
-	\Core\BaseLib::dispatch();
+		//定义REWRITE模式 SCHEMA://hostname/index.php（或者其他应用入口文件）/模块/控制器/操作/[参数名/参数值...]
+		/**
+		* eg:localhost/chat/index.php 转入 localhost/chat/index.php/index/index/index
+		*/
+		\Core\BaseLib::dispatch();
+	} catch (ConfException $e) {//配置文件异常
+	} catch (Exception $e) {//后备捕捉器，正常情况下不会被条用
+	}

@@ -25,7 +25,7 @@
 		 * param array $data		 usage:array(k1=>v1,k2=>v2,...)
 		 * return NULL
 		 **/
-		public function render($view = NULL,$data = array()) {//TODO
+		public function render($view = NULL,array $data = array()) {//TODO
 			!empty($data) && extract($data, EXTR_PREFIX_SAME,'data');
 			ob_start();
 			ob_implicit_flush(0);
@@ -39,7 +39,7 @@
 
 		//部分渲染，加载共同模板 TODO	
 
-		private function dispatchJump($view = '',$data = array()) {
+		private function dispatchJump($view = '',array $data = array()) {
 			!empty($data) && extract($data,EXTR_PREFIX_SAME,'data');
 			ob_start();
 			ob_implicit_flush(0);
@@ -69,7 +69,29 @@
 		protected function redirect() {
 		}
 
-		public function __call($className,$args) {//其他魔术方法使用 TODO
+		/**
+			* @Brief  对数组进行json编码
+			*
+			* @Param $data
+			*
+			* @Returns   
+		 */
+		public function toJson(array $data) {
+			if (is_string($data)) {
+				return $data;
+			}
+			return json_encode($data);
+		}
+
+		/**
+			* @Brief  控制器中不存在相应操作时提示
+			*
+			* @Param $className
+			* @Param $args
+			*
+			* @Returns   
+		 */
+		public function __call($className,$args) {//其他魔术方法使用 TODO  魔术方法在框架中的使用
 			trigger_error('控制器'.$this->CName.'中'.$className.'操作不存在',E_USER_ERROR);
 		}	
 	}
