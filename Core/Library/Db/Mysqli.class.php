@@ -9,9 +9,8 @@
 	final class Mysqli extends Db {
 		private $mysqli_link = null;//保存一个mysqli链接
 		private $mysqli_rs = null;//保持一个mysqli query的结果集资源 mysqli_rs
-		protected $tableName = ''; //要操作的表名
 		
-		final protected function __construct($config) {
+		final protected function __construct(array $config) {
 			//调用Db类的构造方法
 			parent::__construct($config);
 			//连接数据库

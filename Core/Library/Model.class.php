@@ -9,12 +9,6 @@
 	 * 定义Model为抽象类，用于具体模型类继承，其本身不能被实例化
 	 **/
 	abstract class Model {
-		private $rule = [
-			'MySQL' => 'Mysqli',
-			'Memcache' => 'Memcache',
-			'Redis' => 'Redis',
-
-		];
 		protected $db = null;//保存数据库操作单例
 		protected $config = array();//合并之后的配置文件（框架配置文件，应用配置文件，模型类配置文件）
 
@@ -39,6 +33,10 @@
 		protected $_pad = array();//自动填充规则
 
 		public function __construct() {
+			//问题：
+			//1每次获取对象都要合并config，这样不行
+			//2这里要判断对应db还是cache
+
 			//数据库配置文件 TODO 工厂模式
 			$CName = '\\'.\Core\BaseLib::$M.'\\Conf\\Config';//类名
 			$this->config = array_merge(\Core\Config::getConf(),$CName::getConf(),$this->connection);//合并配置文件
@@ -48,7 +46,7 @@
 			isset($this->dbName) && $this->config['DB_NAME'] = $this->dbName;
 
 			//根据DB_TYPE获取对应的数据库对象单例
-			$DName = '\\Core\\Library\\Db\\'.$this->rule[$this->config['DB_TYPE']];
+			$DName = '\\Core\\Library\\Db\\'.$this->config['DB_TYPE'];
 			$this->db = $DName::getIns($this->config);
 		}
 

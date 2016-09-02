@@ -56,6 +56,8 @@
 			spl_autoload(CORE_ROOT.'Library/'.$proCN);
 		} else if($flag === 'Db') {			//框架Core/Library/Db目录下
 			spl_autoload(CORE_ROOT.'Library/Db/'.$proCN);
+		} else if($flag === 'Cache') {		//框架Core/Library/Cache目录下
+			spl_autoload(CORE_ROOT.'Library/Cache/'.$proCN);
 		} else if($flag === 'Plugin') {		//框架Core/Library/Plugin目录下
 			spl_autoload(CORE_ROOT.'Library/Plugin/'.$proCN);
 		}
