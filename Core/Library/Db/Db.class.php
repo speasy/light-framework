@@ -44,6 +44,8 @@
 		abstract public function delete();
 
 
+		//TODO add del update return $this chain call
+
 		/**
 		 *关闭链接
 		 */
