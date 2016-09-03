@@ -7,6 +7,9 @@
 	 **/
 	abstract class Model {
 		private $delegate = NULL;
+
+
+
 		public function __construct(array $config = array()) {
 			/*
 			//框架配置文件，应用配置文件，具体类配置文件合并 TODO 逻辑有问题

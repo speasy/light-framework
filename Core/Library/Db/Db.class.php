@@ -46,6 +46,9 @@
 		abstract public function delete();
 
 		/* TODO 防止SQL注入 链式调用
+		abstract public function from();
+		abstract public function on();
+		abstract public function select();
 		abstract public function where();
 		abstract public function group();
 		abstract public function order();
@@ -56,6 +59,8 @@
 		abstract public function gt();
 		abstract public function lt();
 		abstract public function eq();
+		abstract public function in();
+		abstract public function between();
 		*/
 
 
