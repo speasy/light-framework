@@ -120,7 +120,7 @@ EOF;
 	class Config {
 		static public function getConf() {
 			return array(
-				'TYPE'		=>'MySQL',					//数据库类型 例如:MySQL,Memcache,Redis
+				'ACTUAL_NAME'		=>'MySQL',					//数据库类型 例如:MySQL,Memcache,Redis
 				//各种数据库配置文件
 				'MYSQL' => [
 					//数据库配置

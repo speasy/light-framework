@@ -73,6 +73,7 @@
 		* eg:localhost/chat/index.php 转入 localhost/chat/index.php/index/index/index
 		*/
 		\Core\BaseLib::dispatch();
+	} catch (DbException $e) {//数据库异常
 	} catch (ConfException $e) {//配置文件异常
-	} catch (Exception $e) {//后备捕捉器，正常情况下不会被条用
+	} catch (Exception $e) {//后备捕捉器，正常情况下不会被调用
 	}

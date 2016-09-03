@@ -9,10 +9,10 @@
 		static public function getConf() {
 			return [
 				//框架配置
-				'DEFAULT_CREATE_DIRS' => array('Common','Conf','Controller','Model','View','Runtime','Public','Upload'),//默认在每个应用下面创建的目录名
-				'CONFIRM_RESOURCE_DIR' => array('Public',array('Js','Css','Images')),//确定DEFAULT_CREATE_DIRS中那个目录存放静态资源文件
+				'DEFAULT_CREATE_DIRS' => ['Common','Conf','Controller','Model','View','Runtime','Public','Upload'],//默认在每个应用下面创建的目录名
+				'CONFIRM_RESOURCE_DIR' => ['Public',['Js','Css','Images']],//确定DEFAULT_CREATE_DIRS中那个目录存放静态资源文件
 				'DIR_SECURE_FILENAME' => 'index.html',//目录安全文件,TODO 可以在入口文件中通过define('DIR_SECURE_FILENAME', 'default.html');修改
-				'TYPE'		=>'MySQL',					//数据库类型 例如:MySQL,Memcache,Redis
+				'ACTUAL_NAME' => 'MySQL',					//数据库类型 例如:MySQL,Memcache,Redis
 				//各种数据库配置文件
 				'MYSQL' => [
 					//数据库配置
@@ -27,6 +27,18 @@
 				'REDIS' => [
 				],
 				'MEMCACHE' => [
+				],
+				//具体数据库到数据库类别映射
+				'TYPE_MAP' => [
+					'Db' => ['MySQL','MySQLi'],
+					'Cache' => ['File','Memcache','Redis'],
+				],
+				//数据库驱动容错映射
+				'DRIVER_MAP' => [
+					'Mysqli'=> ['mysql','mysqli'],
+					'File' => ['file'],
+					'Memcache' => ['memcache'],
+					'Redis' => ['redis'],
 				],
 			];
 		}

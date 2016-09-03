@@ -13,8 +13,9 @@
 		final protected function __construct(array $config) {
 			//调用Db类的构造方法
 			parent::__construct($config);
+
 			//连接数据库
-			$this->connect($this->config['DB_HOST'],$this->config['DB_USER'],$this->config['DB_PWD'],$this->config['DB_NAME']);
+			$this->connect($this->config[$this->config['ACTUAL_NAME']]['DB_HOST'],$this->config[$this->config['ACTUAL_NAME']]['DB_USER'],$this->config[$this->config['ACTUAL_NAME']]['DB_PWD'],$this->config[$this->config['ACTUAL_NAME']]['DB_NAME']);
 		}
 
 		/**
@@ -79,7 +80,7 @@
 		 * 最终拼接结果:
 		 * 对于增加:insert to tableName(field1,field2,...) values(value1,value2,...)
 		 */
-		public function add($data = array()) {
+		public function insert(array $data = array()) {
 			$this->execute($data);
 			return $this->isSucess();
 		}
@@ -92,7 +93,7 @@
 		 * 最终拼接结果:
 		 * 对于修改:update tableName set field1=value1,field2=value2,...  where field1=value1 and field2=value2 and ....
 		 */
-		public function update($data = array(),$cond) {
+		public function updateAll(array $data = array(),$cond) {
 			$this->execute($data,$cond);
 			return $this->isSucess();
 		}
@@ -103,7 +104,7 @@
 		* 最终拼接结果:
 		* delete from tableName where field1=value1 and field2=value2 and ....
 		 */
-		public function del($cond = array()) {
+		public function deleteAll(array $cond = array()) {
 			$sql = 'delete from '.$this->tableName.' where ';
 			foreach($cond as $k=>$v) {
 				$sql .= $k.'='.$v.' and ';
@@ -243,12 +244,12 @@
 			*
 			* @Returns   
 		 */
-		private function close() {
+		protected function close() {
 			$this->mysqli_link->close();
 		}
 
 		public function __destruct() {
 			$this->close();
 		}
-		//TODO group by order by where
+		//TODO group by order by where  sql注入 链式操作
 	}
