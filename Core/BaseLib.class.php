@@ -51,11 +51,11 @@
 			*
 			* @Returns   
 		 */
-		static public function init_dir() {
-			if(!file_exists(APP_ROOT.'Lock.txt')) {//若Lock.txt文件不存在，则创建初始化目录
+		static public function init_dir() {//TODO __NAMESPACE__  or namesapce
+			if(!file_exists(APP_ROOT.'Init.lock')) {//若Init.lock文件不存在，则创建初始化目录
 				$core_config = \Core\Config::getConf();
 				self::mk_dir(APP_ROOT);
-				touch(APP_ROOT.'Lock.txt');//创建Lock.txt文件，表示应用目录以及创建完毕，不需要每次创建
+				touch(APP_ROOT.'Init.lock');//创建Init.lock文件，表示应用目录以及创建完毕，不需要每次创建
 				touch(APP_ROOT.'index.html');//创建空白index.html，目录安全文件
 				//创建对应应用下的目录
 				foreach($core_config['DEFAULT_CREATE_DIRS'] as $v) {

@@ -60,6 +60,8 @@
 			spl_autoload(CORE_ROOT.'Library/Cache/'.$proCN);
 		} else if($flag === 'Plugin') {		//框架Core/Library/Plugin目录下
 			spl_autoload(CORE_ROOT.'Library/Plugin/'.$proCN);
+		} else if($flag === 'Exception') {  //框架Core/Library/Exception目录下
+			spl_autoload(CORE_ROOT.'Library/Exception/'.$proCN);
 		}
 	},true,false);
 
@@ -73,7 +75,10 @@
 		* eg:localhost/chat/index.php 转入 localhost/chat/index.php/index/index/index
 		*/
 		\Core\BaseLib::dispatch();
-	} catch (DbException $e) {//数据库异常
-	} catch (ConfException $e) {//配置文件异常
-	} catch (Exception $e) {//后备捕捉器，正常情况下不会被调用
+	} catch (\Core\Library\Exception\DbException $e) {//数据库异常
+		echo 'DbException';
+	} catch (\Core\Library\Exception\ConfException $e) {//配置文件异常
+		echo $e;
+	} catch (\Exception $e) {//后备捕捉器，正常情况下不会被调用
+		echo 'Exception';
 	}

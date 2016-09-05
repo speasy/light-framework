@@ -9,9 +9,9 @@
 	class Config {
 		static public function getConf() {
 			return array(
-				'ACTUAL_NAME'		=>'Mysqli',					//数据库类型 例如:MySQL,Memcache,Redis
+				'ACTUAL_NAME'		=>'MySQL',					//数据库类型 例如:MySQL,Memcache,Redis
 				//各种数据库配置文件
-				'Mysqli' => [
+				'MYSQL' => [
 					//数据库配置
 					'DB_HOST'		=>'localhost',					//数据库地址
 					'DB_NAME'		=>'chat',					//数据库名
