@@ -10,7 +10,7 @@
 
 
 
-		public function __construct(array $config = array()) {
+		public function __construct(array $config = array()) {//TODO 配置文件 或者 DSN（data source name）
 			/*
 			//框架配置文件，应用配置文件，具体类配置文件合并 TODO 逻辑有问题
 			$CName = '\\'.\Core\BaseLib::$M.'\\Conf\\Config';//类名
