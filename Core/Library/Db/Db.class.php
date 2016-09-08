@@ -7,11 +7,17 @@
 
 	abstract class Db {
 		static protected $ins = NULL;//保存数据库对象 TODO 子类继承父类，属性方法都可以继承，但是不一定能调用（可见性控制）
-		protected $tableName = NULL;//要操作的表名
+		
+		/*db_config*/
+		protected $config;//数据库配置文件
+		protected $dbName = NULL;//定义模型当前对应的数据库名称，只有当你当前的模型类对应的数据库名称和配置文件不同的时候才需要定义
+		protected $tableName = NULL;//不包含表前缀的数据表名称，一般情况下默认和模型名称相同，只有当你的表名和当前的模型类的名称不同的时候才需要定义
+		protected $tablePrefix = NULL;//定义模型对应数据表的前缀，如果未定义则获取配置文件中的DB_PREFIX参数
 		protected $primaryKey = NULL;//主键
+		/*db_config*/
+
 		protected $component = array();//保存待拼接的SQL语句元素
 		protected $exeQueue = array();//方法执行队列
-		protected $config;//数据库配置文件
 
 		protected function __construct(array $config = array()) {
 			$this->config = $config;

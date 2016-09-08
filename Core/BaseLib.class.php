@@ -53,7 +53,7 @@
 		 */
 		static public function init_dir() {//TODO __NAMESPACE__  or namesapce
 			if(!file_exists(APP_ROOT.'Init.lock')) {//若Init.lock文件不存在，则创建初始化目录
-				$core_config = \Core\Config::getConf();
+				$core_config = \Core\Config::getGeneralConf();
 				self::mk_dir(APP_ROOT);
 				touch(APP_ROOT.'Init.lock');//创建Init.lock文件，表示应用目录以及创建完毕，不需要每次创建
 				touch(APP_ROOT.'index.html');//创建空白index.html，目录安全文件
@@ -117,27 +117,8 @@ EOF;
 	namespace $ns;
 	defined('TOKEN') || exit();
 
-	class Config {
-		static public function getConf() {
-			return array(
-				'ACTUAL_NAME'		=>'MySQL',					//数据库类型 例如:MySQL,Memcache,Redis
-				//各种数据库配置文件
-				'MYSQL' => [
-					//数据库配置
-					'DB_HOST'		=>'localhost',					//数据库地址
-					'DB_NAME'		=>'chat',					//数据库名
-					'DB_USER'		=>'root',					//用户名
-					'DB_PWD'		=>'root888',					//密码
-					'DB_PORT'		=>'3306',					//端口
-					'DB_CHARSET'	=>'utf8',				//编码
-					'DB_PREFIX'		=>'',					//表前缀
-				],
-				'REDIS' => [
-				],
-				'MEMCACHE' => [
-				],
-			);
-		}
+	class Config extends \Core\Config{
+		//TODO format modify!
 	}
 EOF;
 				self::initFile(APP_ROOT.'Conf/'.'Config.class.php',$content);
@@ -191,6 +172,8 @@ EOF;
 			self::$M = $M = ucfirst(array_shift($rw));
 			self::$C = $C = ucfirst(array_shift($rw));
 			self::$A = $A = array_shift($rw);
+
+			//TODO m/c/a/f1/v1/f2/v2  参数是否正确获取？
 
 			//获取GET参数
 			$args = array();
